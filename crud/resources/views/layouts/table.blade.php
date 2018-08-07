@@ -18,12 +18,12 @@
             <tr>
                 <th>Name
                 <a href="/employees/create/" class="edit" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
+                
                 </th>
                 <th>Company
                 <a href="/companies/create/" class="edit" title="Add" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
                 </th>
                 <th>Company Description</th>
-                <th>Actions</th>
             </tr>
         </thead>
         
@@ -31,14 +31,28 @@
             
             @foreach ($employees as $employee)
                 <tr>
-                    <td>{{ $employee->name }}</td>
-                    <td>{{ $employee->companies->name }}</td>
-                    <td>{{ $employee->companies->description }}</td>
-                    
-                    <td>
-                        <a class="edit" title="Edit" data-toggle="tooltip"><i class="material-icons">&#xE254;</i></a>
-                        <a class="delete" title="Delete" data-toggle="tooltip"><i class="material-icons">&#xE872;</i></a>
+                    <td>{{ $employee->name }}
+                        <form action="{{route('employee.destroy', $employee['id'])}}" method="post">
+                                    @csrf
+                                    <input name="_method" type="hidden" value="DELETE">
+                                    <button  class="btn btn-danger" type="submit">Delete</button>
+                        </form>
+
+                        
+                        <a href="{{route('employee.edit', $employee['id'])}}" class="btn btn-warning">Edit</a>
+                        
                     </td>
+                    <td>{{ $employee->companies->name }}
+                    <form action="{{route('company.destroy', $employee->companies['id'])}}" method="post">
+                                    @csrf
+                                    <input name="_method" type="hidden" value="DELETE">
+                                    <button  class="btn btn-danger" type="submit">Delete</button>
+                    </form>
+
+                    <a href="{{route('company.edit', $employee->companies['id'])}}" class="btn btn-warning">Edit</a>
+                    </td>
+                    <td>{{ $employee->companies->description }}</td>
+
                 </tr>
             @endforeach
             
